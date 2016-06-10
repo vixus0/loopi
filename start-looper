@@ -79,8 +79,11 @@ else
     fi
 
     # Set dry level
-    echo "Setting dry level to 1"
+    echo "Applying SL settings"
     oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/set" "sf" "dry" "1.0"
+
+    # Quantize stuff
+    oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/sl/-1/set" "sf" "quantize" "1.0"
   else
     echo "jack couldn't start"
     exit 1

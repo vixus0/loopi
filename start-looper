@@ -10,6 +10,7 @@ mkdir -p log
 
 # Settings
 LOOPS=4
+BINDINGS="./fcb1010.slb"
 MONOHORN="./monohorn/bin/monohorn"
 SLOONICORN="./sloonicorn/sloo"
 
@@ -53,7 +54,7 @@ else
   if test "$(jack_wait -c)" = "running"; then
     # Start sooperlooper
     echo "Starting sooperlooper with $LOOPS loops"
-    sooperlooper -l "$LOOPS" > log/sooperlooper.log 2>/dev/null &
+    sooperlooper -m "$BINDINGS" -l "$LOOPS" > log/sooperlooper.log 2>/dev/null &
 
     # Make jack connections after waiting on sooperlooper
     sleep 2

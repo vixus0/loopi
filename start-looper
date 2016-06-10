@@ -59,10 +59,12 @@ else
     RETRIES=0
 
     until test ! -z "$(pgrep sooperlooper)" || test "$RETRIES" -eq 3; do
+      echo "Waiting for sooperlooper"
       sleep 1
       $(( RETRIES++ ))
     done
 
+    echo "Connecting jack ports"
     jack_connect system:capture_1 sooperlooper:common_in_1
     jack_connect system:capture_2 sooperlooper:common_in_2
     jack_connect sooperlooper:common_out_1 system:playback_1

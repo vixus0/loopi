@@ -10,7 +10,7 @@ set -e
 set -u
 set -o pipefail
 
-mkdir -p log
+mkdir -p $DIR/log
 
 # Settings
 LOOPS=4

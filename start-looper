@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-./stop-looper
+./stop-looper 2>/dev/null
 
 set -e
 set -u

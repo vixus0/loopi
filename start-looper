@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+
+./stop-looper
+
+set -e
+set -u
+set -o pipefail
+
+mkdir -p log
+
+# Settings
+LOOPS=4
+MONOHORN="./monohorn/bin/monohorn"
+SLOONICORN="./sloonicorn/sloo"
+
+# Start Monohorn - needs root
+echo "Starting monohorn"
+sudo "$MONOHORN" > log/monohorn.log 2>&1 &
+
+# Start sloonicorn - give monohorn time to start
+echo "Starting sloonicorn"
+
+# Check for remote sooperlooper
+if test ! -z "${SL_OSC_URL:-}"; then
+
+  echo "Using remote SL at: $SL_OSC_URL"
+  "$SLOONICORN" -s "$SL_OSC_URL" > log/sloonicorn.log 2>&1 &
+
+else
+
+  "$SLOONICORN" > log/sloonicorn.log 2>&1 &
+
+  # Set CPU scaling to performance
+  echo -n performance | sudo tee /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor > /dev/null
+  
+  # So that we can run jackd headless
+  export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
+  
+  # Check if our USB soundcard is connected
+  card1="$(aplay -l | awk '/card 1:/ {print $3}')"
+  
+  if test -z "$card1"; then
+    echo "Starting jack: dummy device"
+    jackd -d dummy > log/jack.log 2>&1 &
+  else
+    echo "Starting jack: $card1 device"
+    jackd -R -P70 -t2000 -dalsa -d"hw:$card1" -p128 -n3 -r44100 --midi seq -s > log/jack.log 2>&1 &
+  fi
+
+  # Give jackd time to start
+  jack_wait -w -t 3 2>/dev/null
+
+  if test "$(jack_wait -c)" = "running"; then
+    # Start sooperlooper
+    echo "Starting sooperlooper with $LOOPS loops"
+    sooperlooper -l "$LOOPS" > log/sooperlooper.log 2>/dev/null &
+
+    # Make jack connections after waiting on sooperlooper
+    RETRIES=0
+
+    until test ! -z "$(pgrep sooperlooper)" || test "$RETRIES" -eq 3; do
+      sleep 1
+      $(( RETRIES++ ))
+    done
+
+    jack_connect system:capture_1 sooperlooper:common_in_1
+    jack_connect system:capture_2 sooperlooper:common_in_2
+    jack_connect sooperlooper:common_out_1 system:playback_1
+    jack_connect sooperlooper:common_out_2 system:playback_2
+
+    # Make midi connections
+    if test ! -z "$(aconnect -o | grep 'USB Midi')"; then
+      aconnect "USB Midi:0" "sooperlooper:0"
+    else
+      echo "USB Midi adapter not connected"
+    fi
+  else
+    echo "jack couldn't start"
+  fi
+
+fi
+

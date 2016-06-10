@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Disconnect all the things
+aconnect -d "USB Midi:0" "sooperlooper:0"
+
+# Kill all the things
+killall sloo
+killall jackd
+killall sooperlooper
+sudo killall monohorn

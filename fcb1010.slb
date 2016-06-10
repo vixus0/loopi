@@ -41,3 +41,5 @@
 0 n 29  note oneshot 2  0 1  norm 0 127
 0 n 30  note oneshot 3  0 1  norm 0 127
 
+# bank 03
+0 n 40  note undo_all -1  0 1  norm 0 127

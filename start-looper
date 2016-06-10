@@ -45,7 +45,7 @@ else
     jackd -d dummy > log/jack.log 2>&1 &
   else
     echo "Starting jack: $card1 device"
-    jackd -R -P70 -t2000 -dalsa -d"hw:$card1" -p128 -n3 -r48000 --midi seq -s > log/jack.log 2>&1 &
+    jackd -R -P70 -t2000 -dalsa -d"hw:$card1" -p64 -n3 -r48000 --midi seq -s > log/jack.log 2>&1 &
   fi
 
   # Give jackd time to start

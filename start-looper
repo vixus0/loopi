@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-./stop-looper 2>/dev/null
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+echo "Running as user $USER in dir $DIR"
+
+$DIR/stop-looper 2>/dev/null
 
 set -e
 set -u
@@ -10,13 +14,13 @@ mkdir -p log
 
 # Settings
 LOOPS=4
-BINDINGS="./fcb1010.slb"
-MONOHORN="./monohorn/bin/monohorn"
-SLOONICORN="./sloonicorn/sloo"
+BINDINGS="$DIR/fcb1010.slb"
+MONOHORN="$DIR/monohorn/bin/monohorn"
+SLOONICORN="$DIR/sloonicorn/sloo"
 
 # Start Monohorn - needs root
 echo "Starting monohorn"
-sudo "$MONOHORN" > log/monohorn.log 2>&1 &
+sudo "$MONOHORN" > $DIR/log/monohorn.log 2>&1 &
 
 # Start sloonicorn - give monohorn time to start
 echo "Starting sloonicorn"
@@ -25,11 +29,11 @@ echo "Starting sloonicorn"
 if test ! -z "${SL_OSC_URL:-}"; then
 
   echo "Using remote SL at: $SL_OSC_URL"
-  "$SLOONICORN" -s "$SL_OSC_URL" > log/sloonicorn.log 2>&1 &
+  "$SLOONICORN" -s "$SL_OSC_URL" > $DIR/log/sloonicorn.log 2>&1 &
 
 else
 
-  "$SLOONICORN" > log/sloonicorn.log 2>&1 &
+  "$SLOONICORN" > $DIR/log/sloonicorn.log 2>&1 &
 
   # Set CPU scaling to performance
   echo -n performance | sudo tee /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor > /dev/null
@@ -42,10 +46,10 @@ else
   
   if test -z "$card1"; then
     echo "Starting jack: dummy device"
-    jackd -d dummy > log/jack.log 2>&1 &
+    jackd -d dummy > $DIR/log/jack.log 2>&1 &
   else
     echo "Starting jack: $card1 device"
-    jackd -R -P70 -t2000 -dalsa -d"hw:$card1" -p64 -n3 -r48000 --midi seq -s > log/jack.log 2>&1 &
+    jackd -R -P70 -t2000 -dalsa -d"hw:$card1" -p64 -n3 -r48000 --midi seq -s > $DIR/log/jack.log 2>&1 &
   fi
 
   # Give jackd time to start
@@ -54,7 +58,7 @@ else
   if test "$(jack_wait -c)" = "running"; then
     # Start sooperlooper
     echo "Starting sooperlooper with $LOOPS loops"
-    sooperlooper -m "$BINDINGS" -l "$LOOPS" > log/sooperlooper.log 2>/dev/null &
+    sooperlooper -m "$BINDINGS" -l "$LOOPS" > $DIR/log/sooperlooper.log 2>/dev/null &
 
     # Make jack connections after waiting on sooperlooper
     sleep 2

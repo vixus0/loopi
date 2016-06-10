@@ -45,8 +45,8 @@ else
   card1="$(aplay -l | awk '/card 1:/ {print $3}')"
   
   if test -z "$card1"; then
-    echo "Starting jack: dummy device"
-    jackd -d dummy > $DIR/log/jack.log 2>&1 &
+    echo "No USB soundcard connected"
+    exit 1
   else
     echo "Starting jack: $card1 device"
     jackd -R -P70 -t2000 -dalsa -d"hw:$card1" -p64 -n3 -r48000 --midi seq -s > $DIR/log/jack.log 2>&1 &
@@ -75,6 +75,7 @@ else
       aconnect "USB Midi:0" "sooperlooper:0"
     else
       echo "USB Midi adapter not connected"
+      exit 1
     fi
 
     # Set dry level
@@ -82,7 +83,9 @@ else
     oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/set" "sf" "dry" "1.0"
   else
     echo "jack couldn't start"
+    exit 1
   fi
 
 fi
 
+exit 0

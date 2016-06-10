@@ -70,6 +70,7 @@ else
 
     # Make midi connections
     if test ! -z "$(aconnect -o | grep 'USB Midi')"; then
+      echo "Connecting USB Midi to sooperlooper"
       aconnect "USB Midi:0" "sooperlooper:0"
     else
       echo "USB Midi adapter not connected"

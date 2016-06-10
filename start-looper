@@ -72,6 +72,10 @@ else
     else
       echo "USB Midi adapter not connected"
     fi
+
+    # Set dry level
+    echo "Setting dry level to 1"
+    oscsend "$SL_OSC_URL" "/set" "sf" "dry" "1.0"
   else
     echo "jack couldn't start"
   fi

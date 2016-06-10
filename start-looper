@@ -75,7 +75,7 @@ else
 
     # Set dry level
     echo "Setting dry level to 1"
-    oscsend "$SL_OSC_URL" "/set" "sf" "dry" "1.0"
+    oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/set" "sf" "dry" "1.0"
   else
     echo "jack couldn't start"
   fi

@@ -56,10 +56,7 @@ else
     sooperlooper -l "$LOOPS" > log/sooperlooper.log 2>/dev/null &
 
     # Make jack connections after waiting on sooperlooper
-    until test ! -z "$(pgrep sooperlooper)"; do
-      echo "Waiting for sooperlooper"
-      sleep 1
-    done
+    sleep 2
 
     echo "Connecting jack ports"
     jack_connect system:capture_1 sooperlooper:common_in_1

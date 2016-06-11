@@ -16,4 +16,4 @@ export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
   
 # Start
 jackd -R -P "$priority" -t "$timeout" \
-  -d "$backend" -d "$card" -p "$period" -n "$np" -r "$rate" --midi seq -s 
+  -d "$backend" -d "$card" -p "$period" -n "$np" -r "$rate" --midi seq

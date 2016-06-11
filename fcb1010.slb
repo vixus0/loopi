@@ -35,15 +35,20 @@
 0 n 20  note solo 3  0 1  norm 0 127
 
 # bank 02
-0 on 22  note record 0  0 1  norm 0 127
-0 on 23  note record 1  0 1  norm 0 127
-0 on 24  note record 2  0 1  norm 0 127
-0 on 25  note record 3  0 1  norm 0 127
+0 n 22  note record 0  0 1  norm 0 127
+0 n 23  note record 1  0 1  norm 0 127
+0 n 24  note record 2  0 1  norm 0 127
+0 n 25  note record 3  0 1  norm 0 127
 
 0 off 22  note mute_on 0  0 1  norm 0 127
 0 off 23  note mute_on 1  0 1  norm 0 127
 0 off 24  note mute_on 2  0 1  norm 0 127
 0 off 25  note mute_on 3  0 1  norm 0 127
+
+0 off 22  note pause 0  0 1  norm 0 127
+0 off 23  note pause 1  0 1  norm 0 127
+0 off 24  note pause 2  0 1  norm 0 127
+0 off 25  note pause 3  0 1  norm 0 127
 
 0 n 27  note oneshot 0  0 1  norm 0 127
 0 n 28  note oneshot 1  0 1  norm 0 127

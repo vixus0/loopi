@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+priority="70"
+timeout="2000"
+backend="alsa"
+card="hw:$1"
+period="16"
+np="3"
+rate="48000"
+
+# Set CPU scaling to performance
+echo -n performance | sudo tee /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor > /dev/null
+
+# So that we can run jackd headless
+export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
+  
+# Start
+jackd -R -P "$priority" -t "$timeout" \
+  -d "$backend" -d "$card" -p "$period" -n "$np" -r "$rate" --midi seq -s 

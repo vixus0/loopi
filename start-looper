@@ -42,7 +42,7 @@ else
   export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
   
   # Check if our USB soundcard is connected
-  card1="$(aplay -l | awk '/card [1-9]:/ {print $3}')"
+  card1="$(aplay -l | awk '/card [1-9]:/ {print $3; exit}')"
   
   if test -z "$card1"; then
     echo "No USB soundcard connected"

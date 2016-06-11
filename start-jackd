@@ -4,7 +4,7 @@ priority="70"
 timeout="2000"
 backend="alsa"
 card="hw:$1"
-period="16"
+period="64"
 np="3"
 rate="48000"
 

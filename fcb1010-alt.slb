@@ -1,6 +1,6 @@
 # select loops
-0 n 5  set select_next_loop -2  0 1  norm 0 127
-0 n 10 set select_prev_loop -2  0 1  norm 0 127
+0 on 5  set select_next_loop -2  0 1  norm 0 127
+0 on 10 set select_prev_loop -2  0 1  norm 0 127
 
 # current loop rate
 0 cc 1  set rate        -3  0.5 1  norm 0 127

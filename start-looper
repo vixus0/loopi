@@ -17,6 +17,7 @@ LOOPS=4
 BINDINGS="$DIR/fcb1010-alt.slb"
 MONOHORN="$DIR/monohorn/bin/monohorn"
 SLOONICORN="$DIR/sloonicorn/sloo"
+RECORDINGS="$HOME/recordings"
 
 # Start Monohorn - needs root
 echo "Starting monohorn"
@@ -52,6 +53,12 @@ else
   jack_wait -w -t 3 2>/dev/null
 
   if test "$(jack_wait -c)" = "running"; then
+    # Start jack_capture
+    (cd "$RECORDINGS" && $DIR/jack_capture -d 300 -z 3 --format ogg --daemon --osc 9898 --timemachine --timemachine-prebuffer 60) &
+
+    # Start midi_listen
+    aseqdump -p "USB Midi:0" | $DIR/midi_listen $DIR/midi_osc > $DIR/log/midi_listen.log 2>&1 &
+
     # Start sooperlooper
     echo "Starting sooperlooper with $LOOPS loops"
     sooperlooper -m "$BINDINGS" -l "$LOOPS" > $DIR/log/sooperlooper.log 2>/dev/null &
@@ -86,7 +93,6 @@ else
 
     # Select first loop
     oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/set" "sf" "selected_loop_num" "0.0"
-
   else
     echo "jack couldn't start"
     exit 1

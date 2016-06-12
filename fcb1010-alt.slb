@@ -6,16 +6,16 @@
 0 cc 1  set rate        -3  0.5 1  norm 0 127
 
 # current loop rate
-0 cc 2  set pitch_shift -3  -12 12  norm 0 127
+0 cc 2  set pitch_shift -3  -12 0  norm 0 127
 
 # bank 00
 0 n 1  note overdub     -3  0 1  norm 0 127
 0 n 2  note redo        -3  0 1  norm 0 127
 0 n 3  note undo_all    -1  0 1  norm 0 127
-0 n 4  set  pitch_shift -3  0 0  norm 0 127
+0 n 4  note solo        -3  0 1  norm 0 127
 
 0 n 6  note record      -3  0 1  norm 0 127
 0 n 7  note undo        -3  0 1  norm 0 127
 0 n 8  note record_solo -3  0 1  norm 0 127
-0 n 9  set  rate        -3  1 1  norm 0 127
+0 n 9  note mute        -3  0 1  norm 0 127
 

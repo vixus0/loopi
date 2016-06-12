@@ -10,12 +10,12 @@ with open(sys.argv[1]) as f:
         if len(tk) == 2:
             regex = tk[0]
             cmd = shlex.split(tk[1])
-            map.append((regex, cmd))
+            map.append((re.compile(regex), cmd))
     
 
 while True:
     l = sys.stdin.readline()
-    matches = ((re.match(rx, l), cmd) for rx, cmd in map)
+    matches = ((rx.search(l), cmd) for rx, cmd in map)
     cmds = (cmd for match, cmd in matches if match is not None)
 
     for cmd in cmds:

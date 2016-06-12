@@ -14,7 +14,7 @@ mkdir -p $DIR/log
 
 # Settings
 LOOPS=4
-BINDINGS="$DIR/fcb1010.slb"
+BINDINGS="$DIR/fcb1010-alt.slb"
 MONOHORN="$DIR/monohorn/bin/monohorn"
 SLOONICORN="$DIR/sloonicorn/sloo"
 

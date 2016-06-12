@@ -83,6 +83,10 @@ else
     oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/sl/-1/set" "sf" "quantize" "2.0"
     oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/sl/-1/set" "sf" "sync" "1.0"
     oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/sl/-1/set" "sf" "autoset_latency" "1.0"
+
+    # Select first loop
+    oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/set" "sf" "selected_loop_num" "0.0"
+
   else
     echo "jack couldn't start"
     exit 1

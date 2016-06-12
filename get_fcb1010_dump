@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+dump="${1:-fcb1010_dump.syx}"
+midi="$(amidi -l | awk '/USB Midi/ {print $2}')"
+
+if test -z "$midi"; then
+  echo "USB Midi not connected"
+  exit 1
+fi
+
+amidi -p "$midi" -S "F0002032010C4FF7" -r /dev/null -t 1
+amidi -p "$midi" -S "F0002032010C4FF7" -r "$dump" -t 1

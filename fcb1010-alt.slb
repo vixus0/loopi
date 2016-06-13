@@ -5,8 +5,8 @@
 # current loop rate
 0 cc 1  set rate        -3  0.5 1  norm 0 127
 
-# current loop rate
-0 cc 2  set pitch_shift -3  -12 0  norm 0 127
+# current loop volume
+0 cc 2  set wet         -3  0 1  norm 0 127
 
 # bank 00
 0 n 1  note overdub     -3  0 1  norm 0 127

@@ -13,7 +13,7 @@ aconnect -d "USB Midi:0" "sooperlooper:0"
 # Kill all the things
 echo "Killing processes"
 killall jack_capture
-pkill -9 midi_listen
+pkill -9 -f midi_listen
 killall sloo
 killall jackd
 killall sooperlooper

@@ -55,7 +55,7 @@ else
   if test "$(jack_wait -c)" = "running"; then
     # Start jack_capture
     echo "Starting jack_capture"
-    (cd "$RECORDINGS" && $DIR/jack_capture -d 300 -z 3 --format ogg --daemon --osc 9898 --timemachine --timemachine-prebuffer 60 > $DIR/log/jack_capture.log 2>&1) &
+    (cd "$RECORDINGS" && $DIR/jack_capture -z 3 --format ogg --daemon --osc 9898 --timemachine --timemachine-prebuffer 60 > $DIR/log/jack_capture.log 2>&1) &
 
     # Start midi_listen
     echo "Starting midi_listen"

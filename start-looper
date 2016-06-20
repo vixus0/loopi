@@ -30,12 +30,12 @@ echo "Starting sloonicorn"
 if test ! -z "${SL_OSC_URL:-}"; then
 
   echo "Using remote SL at: $SL_OSC_URL"
-  "$SLOONICORN" -s "$SL_OSC_URL" > $DIR/log/sloonicorn.log 2>&1 &
+  "$SLOONICORN" -s "$SL_OSC_URL" > $DIR/log/sloonicorn.log &
 
 else
 
   # Start sloonicorn
-  "$SLOONICORN" > $DIR/log/sloonicorn.log 2>&1 &
+  "$SLOONICORN" > $DIR/log/sloonicorn.log &
 
   # Check if our USB soundcard is connected
   card1="$(aplay -l | awk '/card [1-9]:/ {print $3; exit}')"

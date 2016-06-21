@@ -8,12 +8,6 @@ period="64"
 np="3"
 rate="48000"
 
-# R8 specific settings
-if test "$card" = "hw:R8"; then
-  np="4"
-  period="1024"
-fi
-
 # Set CPU scaling to performance
 echo -n performance | sudo tee /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor > /dev/null
 

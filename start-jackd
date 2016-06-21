@@ -8,6 +8,9 @@ period="64"
 np="3"
 rate="48000"
 
+# Use remaining params for jackd
+shift 1
+
 # Set CPU scaling to performance
 echo -n performance | sudo tee /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor > /dev/null
 
@@ -16,4 +19,4 @@ export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
   
 # Start
 jackd -R -P "$priority" -t "$timeout" \
-  -d "$backend" -d "$card" -p "$period" -n "$np" -r "$rate" --midi seq
+  -d "$backend" -d "$card" -p "$period" -n "$np" -r "$rate" --midi seq $@

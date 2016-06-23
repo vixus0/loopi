@@ -89,8 +89,10 @@ else
 
     # Quantize stuff
     oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/set" "sf" "sync_source" "1.0"
-    oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/sl/-1/set" "sf" "quantize" "2.0"
+    oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/set" "sf" "output_midi_clock" "1.0"
+    oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/sl/-1/set" "sf" "quantize" "1.0"
     oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/sl/-1/set" "sf" "sync" "1.0"
+    oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/sl/-1/set" "sf" "relative_sync" "1.0"
     oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/sl/-1/set" "sf" "autoset_latency" "1.0"
 
     # Select first loop

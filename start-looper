@@ -37,9 +37,13 @@ else
   # Start sloonicorn
   "$SLOONICORN" > $DIR/log/sloonicorn.log 2>/dev/null &
 
-  # Check if our USB soundcard is connected
-  card1="$(aplay -l | awk '/card [1-9]:/ {print $3; exit}')"
   
+  # Check if our USB soundcard is connected
+  for i in {1..10}; do
+    card1="$(aplay -l | awk '/card [1-9]:/ {print $3; exit}')"
+    test -n "$card1" && break || sleep 1
+  done
+
   # Try and start jack
   if test -z "$card1"; then
     echo "No USB soundcard connected"

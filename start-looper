@@ -61,10 +61,6 @@ else
     echo "Starting jack_capture"
     (cd "$RECORDINGS" && $DIR/jack_capture -z 3 --format ogg --daemon --osc 9898 --timemachine --timemachine-prebuffer 60 > $DIR/log/jack_capture.log 2>&1) &
 
-    # Start midi_listen
-    echo "Starting midi_listen"
-    aseqdump -p "USB Midi:0" | $DIR/midi_listen $DIR/midi_osc > $DIR/log/midi_listen.log 2>&1 &
-
     # Start sooperlooper
     echo "Starting sooperlooper with $LOOPS loops"
     sooperlooper -m "$BINDINGS" -l "$LOOPS" > $DIR/log/sooperlooper.log 2>/dev/null &
@@ -78,12 +74,18 @@ else
     jack_connect sooperlooper:common_out_1 system:playback_1
     jack_connect sooperlooper:common_out_2 system:playback_2
 
-    # Make midi connections
-    if test ! -z "$(aconnect -o | grep 'USB Midi')"; then
-      echo "Connecting USB Midi to sooperlooper"
-      aconnect "USB Midi:0" "sooperlooper:0"
+    # Make midi connections - Pick last real MIDI device
+    MIDI_DEV="$(aseqdump -l | awk '!/name|System|Through/ {d = $2} END {printf d}')"
+
+    if test ! -z "$(aconnect -o | grep "$MIDI_DEV")"; then
+      echo "Connecting $MIDI_DEV to sooperlooper"
+      aconnect "${MIDI_DEV}:0" "sooperlooper:0"
+
+      # Start midi_listen
+      echo "Starting midi_listen"
+      aseqdump -p "$MIDI_DEV:0" | $DIR/midi_listen $DIR/midi_osc > $DIR/log/midi_listen.log 2>&1 &
     else
-      echo "USB Midi adapter not connected"
+      echo "$MIDI_DEV MIDI device not connected"
       exit 1
     fi
 

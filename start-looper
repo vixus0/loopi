@@ -75,7 +75,8 @@ else
     jack_connect sooperlooper:common_out_2 system:playback_2
 
     # Make midi connections - Pick last real MIDI device
-    MIDI_DEV="$(aseqdump -l | awk '!/name|System|Through/ {d = $2} END {printf d}')"
+    #MIDI_DEV="$(aseqdump -l | awk '!/name|System|Through/ {d = $2} END {printf d}')"
+    MIDI_DEV="US-2x2"
 
     if test ! -z "$(aconnect -o | grep "$MIDI_DEV")"; then
       echo "Connecting $MIDI_DEV to sooperlooper"

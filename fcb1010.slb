@@ -1,16 +1,19 @@
 # select loops
-0 on 1  set select_next_loop -2  0 1  norm 0 127
-0 on 6  set select_prev_loop -2  0 1  norm 0 127
+# 0 on 1  set select_next_loop -2  0 1  norm 0 127
+# 0 on 6  set select_prev_loop -2  0 1  norm 0 127
+
+# undo all
+0 n 6  note undo_all -1  0 1  norm 0 127
 
 # global output volume
-0 cc 2  set wet -2  0 1  norm 0 127
+# 0 cc 2  set wet -2  0 1  norm 0 127
 
-# current loop rate
-0 cc 3  set rate -3  0.5 1  norm 0 127
+# global loop rate
+# 0 cc 3  set rate -2  0.5 1  norm 0 127
 
 # track pan
-0 cc 1  set pan_1 -3 0 1 norm 0 127
-0 cc 1  set pan_2 -3 1 0 norm 0 127
+# 0 cc 1  set pan_1 -3 0 1 norm 0 127
+# 0 cc 1  set pan_2 -3 1 0 norm 0 127
 
 # bank 00
 0 n 2  note record_or_overdub 0  0 1  norm 0 127
@@ -24,15 +27,15 @@
 0 n 10 note undo 3  0 1  norm 0 127
 
 # bank 01
-0 n 12  note mute 0  0 1  norm 0 127
-0 n 13  note mute 1  0 1  norm 0 127
-0 n 14  note mute 2  0 1  norm 0 127
-0 n 15  note mute 3  0 1  norm 0 127
+0 n 12  note redo 0  0 1  norm 0 127
+0 n 13  note redo 1  0 1  norm 0 127
+0 n 14  note redo 2  0 1  norm 0 127
+0 n 15  note redo 3  0 1  norm 0 127
 
-0 n 17  note solo 0  0 1  norm 0 127
-0 n 18  note solo 1  0 1  norm 0 127
-0 n 19  note solo 2  0 1  norm 0 127
-0 n 20  note solo 3  0 1  norm 0 127
+0 n 17  note undo 0  0 1  norm 0 127
+0 n 18  note undo 1  0 1  norm 0 127
+0 n 19  note undo 2  0 1  norm 0 127
+0 n 20  note undo 3  0 1  norm 0 127
 
 # bank 02
 0 n 22  note record 0  0 1  norm 0 127
@@ -55,5 +58,21 @@
 0 n 29  note oneshot 2  0 1  norm 0 127
 0 n 30  note oneshot 3  0 1  norm 0 127
 
-# bank 03
-0 n 40  note undo_all -1  0 1  norm 0 127
+# lpd8
+0 n 26  note record_or_overdub 0  0 1  norm 0 127
+0 n 27  note record_or_overdub 1  0 1  norm 0 127
+0 n 28  note record_or_overdub 2  0 1  norm 0 127
+0 n 29  note record_or_overdub 3  0 1  norm 0 127
+
+0 n 30  note undo_all -1  0 1  norm 0 127
+
+0 n 36  note mute 0  0 1  norm 0 127
+0 n 37  note mute 1  0 1  norm 0 127
+0 n 38  note mute 2  0 1  norm 0 127
+0 n 39  note mute 3  0 1  norm 0 127
+
+0 n 40  note solo 0  0 1  norm 0 127
+0 n 41  note solo 1  0 1  norm 0 127
+0 n 42  note solo 2  0 1  norm 0 127
+0 n 43  note solo 3  0 1  norm 0 127
+

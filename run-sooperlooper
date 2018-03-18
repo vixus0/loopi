@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+exit_script() {
+  pkill -9 slgui
+  pkill -9 sooperlooper
+}
+
+trap exit_script SIGINT SIGTERM
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+slgui -l 8 -m "$DIR/lpd8.slb" --jack-name=sooperlooper -t 60 &
+
+while test -z $(pgrep sooperlooper); do echo -n .; sleep 1; done
+
+# Set dry level (main in monitoring)
+echo "Applying SL settings"
+oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/set" "sf" "dry" "1.0"
+
+# Quantize stuff
+oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/set" "sf" "sync_source" "1.0"
+oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/set" "sf" "output_midi_clock" "1.0"
+oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/sl/-1/set" "sf" "quantize" "1.0"
+oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/sl/-1/set" "sf" "sync" "1.0"
+oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/sl/-1/set" "sf" "relative_sync" "1.0"
+oscsend "${SL_OSC_URL:-osc.udp://localhost:9951}" "/sl/-1/set" "sf" "autoset_latency" "1.0"
+
+wait

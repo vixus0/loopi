@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+SL_URL="${1:-osc.udp://localhost:9951}"
+OUT_DIR="/mnt/mrbox/loops/$(date +"%Y-%m-%d_%H%M%S")"
+
+mkdir -p "$OUT_DIR"
+
+echo -n "Dumping loops to $OUT_DIR ... "
+
+oscsend "$SL_URL" /sl/0/save_loop sssss "$OUT_DIR/0.wav" "" "" "" ""
+oscsend "$SL_URL" /sl/1/save_loop sssss "$OUT_DIR/1.wav" "" "" "" ""
+oscsend "$SL_URL" /sl/2/save_loop sssss "$OUT_DIR/2.wav" "" "" "" ""
+oscsend "$SL_URL" /sl/3/save_loop sssss "$OUT_DIR/3.wav" "" "" "" ""
+
+echo "DONE"

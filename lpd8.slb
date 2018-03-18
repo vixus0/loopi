@@ -1,0 +1,34 @@
+# lpd8 preset 1
+0 n 26  note record_or_overdub 0  0 1  norm 0 127
+0 n 27  note record_or_overdub 1  0 1  norm 0 127
+0 n 28  note record_or_overdub 2  0 1  norm 0 127
+0 n 29  note record_or_overdub 3  0 1  norm 0 127
+
+0 n 30  note record_or_overdub 4  0 1  norm 0 127
+0 n 31  note record_or_overdub 5  0 1  norm 0 127
+0 n 32  note record_or_overdub 6  0 1  norm 0 127
+0 n 33  note record_or_overdub 7  0 1  norm 0 127
+
+0 cc 5  set wet 0  0 1  norm 0 127
+0 cc 6  set wet 1  0 1  norm 0 127
+0 cc 7  set wet 2  0 1  norm 0 127
+0 cc 8  set wet 3  0 1  norm 0 127
+
+0 cc 1  set wet 4  0 1  norm 0 127
+0 cc 2  set wet 5  0 1  norm 0 127
+0 cc 3  set wet 6  0 1  norm 0 127
+0 cc 4  set wet 7  0 1  norm 0 127
+
+# lpd8 preset 2
+0 n 36  note mute 0  0 1  norm 0 127
+0 n 37  note mute 1  0 1  norm 0 127
+0 n 38  note mute 2  0 1  norm 0 127
+0 n 39  note mute 3  0 1  norm 0 127
+
+0 n 40  note mute 0  0 1  norm 0 127
+0 n 41  note mute 1  0 1  norm 0 127
+0 n 42  note mute 2  0 1  norm 0 127
+0 n 43  note mute 3  0 1  norm 0 127
+
+# fcb1010 bank 00
+0 n 2  note undo_all -1  0 1  norm 0 127

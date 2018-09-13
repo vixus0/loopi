@@ -10,14 +10,20 @@ set -e
 set -u
 set -o pipefail
 
+function stop {
+  $DIR/stop-looper
+}
+
+trap EXIT stop
+
 mkdir -p $DIR/log
 
 # Settings
 LOOPS=4
-BINDINGS="$DIR/fcb1010-alt.slb"
+BINDINGS="$DIR/fcb1010-pi.slb"
 MONOHORN="$DIR/monohorn/bin/monohorn"
 SLOONICORN="$DIR/sloonicorn/sloo"
-RECORDINGS="$HOME/recordings"
+
 
 # Start Monohorn - needs root
 echo "Starting monohorn"
@@ -57,10 +63,6 @@ else
   jack_wait -w -t 3 2>/dev/null
 
   if test "$(jack_wait -c)" = "running"; then
-    # Start jack_capture
-    echo "Starting jack_capture"
-    (cd "$RECORDINGS" && $DIR/jack_capture -z 3 --format ogg --daemon --osc 9898 --timemachine --timemachine-prebuffer 60 > $DIR/log/jack_capture.log 2>&1) &
-
     # Start sooperlooper
     echo "Starting sooperlooper with $LOOPS loops"
     sooperlooper -m "$BINDINGS" -l "$LOOPS" > $DIR/log/sooperlooper.log 2>/dev/null &
@@ -79,12 +81,17 @@ else
     MIDI_DEV="US-2x2"
 
     if test ! -z "$(aconnect -o | grep "$MIDI_DEV")"; then
+      # Start loopidings
+      echo "Starting loopidings"
+      RECORDINGS="/media/usb/djcorbyn/track_" ./loopidings.py > $DIR/log/loopidings.log 2>/dev/null &
+
+      sleep 2
+
       echo "Connecting $MIDI_DEV to sooperlooper"
       aconnect "${MIDI_DEV}:0" "sooperlooper:0"
 
-      # Start midi_listen
-      echo "Starting midi_listen"
-      aseqdump -p "$MIDI_DEV:0" | $DIR/midi_listen $DIR/midi_osc > $DIR/log/midi_listen.log 2>&1 &
+      echo "Connecting $MIDI_DEV to loopidings"
+      aconnect "${MIDI_DEV}:0" "loopidings:0"
     else
       echo "$MIDI_DEV MIDI device not connected"
       exit 1

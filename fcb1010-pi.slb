@@ -1,0 +1,15 @@
+# bank 00
+0 n 1  note record_or_overdub 0  0 1  norm 0 127
+0 n 2  note record_or_overdub 1  0 1  norm 0 127
+0 n 3  note record_or_overdub 2  0 1  norm 0 127
+0 n 4  note record_or_overdub 3  0 1  norm 0 127
+
+0 n 6  note mute 0  0 1  norm 0 127
+0 n 7  note mute 1  0 1  norm 0 127
+0 n 8  note mute 2  0 1  norm 0 127
+0 n 9  note mute 3  0 1  norm 0 127
+
+# undo all
+0 n 10 note undo_all -1  0 1  norm 0 127
+
+

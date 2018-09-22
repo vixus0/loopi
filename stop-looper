@@ -1,12 +1,7 @@
 #!/usr/bin/env bash
 
-# Disconnect all the things
-echo "Disconnecting MIDI"
-aconnect -d "USB Midi:0" "sooperlooper:0"
-aconnect -d "USB Midi:0" "loopidings:0"
-
+set -v
 # Kill all the things
-echo "Killing processes"
 pkill -f loopidings.py
 pkill -9 sloo
 pkill -9 jackd

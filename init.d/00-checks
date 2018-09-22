@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "Looking for audio device: $AUDIO_DEV"
+aplay -l | grep $AUDIO_DEV
+
+echo "Looking for midi device: $MIDI_DEV"
+aconnect -o | grep $MIDI_DEV

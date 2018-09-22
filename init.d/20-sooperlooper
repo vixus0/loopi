@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SL_OSC_URL="${SL_OSC_URL:-osc.udp://localhost:9951}"
+
+# Start sooperlooper
+echo "Starting sooperlooper with $LOOPS loops"
+chronic sooperlooper -m "$BINDINGS" -l "$LOOPS" &
+
+while test -z "$(jack_lsp | grep sooperlooper)"; do sleep 1; done
+
+echo "sooperlooper: connecting audio"
+jack_connect system:capture_1 sooperlooper:common_in_1
+jack_connect system:capture_2 sooperlooper:common_in_2
+jack_connect sooperlooper:common_out_1 system:playback_1
+jack_connect sooperlooper:common_out_2 system:playback_2
+
+echo "sooperlooper: connecting MIDI"
+aconnect "${MIDI_DEV}:0" "sooperlooper:0"
+aconnect "sooperlooper:0" "${MIDI_DEV}:0"
+
+echo "sooperlooper: configuring"
+# Set dry level
+oscsend "$SL_OSC_URL" "/set" "sf" "dry" "1.0"
+
+# Quantize stuff
+oscsend "$SL_OSC_URL" "/set" "sf" "sync_source" "1.0"
+oscsend "$SL_OSC_URL" "/set" "sf" "output_midi_clock" "1.0"
+oscsend "$SL_OSC_URL" "/sl/-1/set" "sf" "quantize" "1.0"
+oscsend "$SL_OSC_URL" "/sl/-1/set" "sf" "sync" "1.0"
+oscsend "$SL_OSC_URL" "/sl/-1/set" "sf" "relative_sync" "1.0"
+oscsend "$SL_OSC_URL" "/sl/-1/set" "sf" "autoset_latency" "1.0"
+

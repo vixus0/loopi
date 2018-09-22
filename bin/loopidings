@@ -13,11 +13,13 @@ jack_capture_stop = SendOSC(Address(9898), '/jack_capture/stop')
 def jack_capture_cmd():
     return 'jack_capture --format ogg --osc 9898 -fp '+environ['RECORDINGS']
 
-def rec_toggle(event):
+def rec_toggle(event, rec):
     if rec:
+      print 'jack_capture STOP'
       rec = False
       return jack_capture_stop
     else:
+      print 'jack_capture RECORD'
       rec = True
       return System(jack_capture_cmd())
 
@@ -29,6 +31,6 @@ config(
 
 run(
 Filter(NOTEON) >> [
-    KeyFilter(notes=[5]) % Process(rec_toggle)
+    KeyFilter(notes=[5]) % Process(rec_toggle, rec)
     ]
 )

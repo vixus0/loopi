@@ -1,2 +1,0 @@
-Note on\s*0, note 11 : oscsend osc.udp://localhost:9898 /jack_capture/tm/start
-Note on\s*0, note 16 : oscsend osc.udp://localhost:9898 /jack_capture/tm/stop

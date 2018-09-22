@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+priority="70"
+timeout="12000"
+backend="alsa"
+card="hw:$AUDIO_DEV"
+period="128"
+np="3"
+rate="48000"
+
+# Set CPU scaling to ondemand
+echo -n ondemand | sudo tee /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor > /dev/null
+
+# So that we can run jackd headless
+export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
+  
+# Start
+chronic jackd --silent -R -P "$priority" -t "$timeout" \
+  -d "$backend" -d "$card" -p "$period" -n "$np" -r "$rate" --midi seq &
+
+# Wait for jack to start
+chronic jack_wait -w -t 5
+while ! test "$(jack_wait -c)" = "running"; do sleep 1; done

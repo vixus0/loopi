@@ -27,7 +27,7 @@ SLOONICORN="$DIR/sloonicorn/sloo"
 
 # Start Monohorn - needs root
 echo "Starting monohorn"
-sudo "$MONOHORN" > $DIR/log/monohorn.log 2>&1 &
+sudo "$MONOHORN" &
 
 # Start sloonicorn - give monohorn time to start
 echo "Starting sloonicorn"
@@ -36,12 +36,12 @@ echo "Starting sloonicorn"
 if test ! -z "${SL_OSC_URL:-}"; then
 
   echo "Using remote SL at: $SL_OSC_URL"
-  "$SLOONICORN" -s "$SL_OSC_URL" > $DIR/log/sloonicorn.log 2>/dev/null &
+  "$SLOONICORN" -s "$SL_OSC_URL" 2>/dev/null &
 
 else
 
   # Start sloonicorn
-  "$SLOONICORN" > $DIR/log/sloonicorn.log 2>/dev/null &
+  "$SLOONICORN" 2>/dev/null &
 
   
   # Check if our USB soundcard is connected
@@ -56,19 +56,19 @@ else
     exit 1
   else
     echo "Starting jack: $card1 device"
-    $DIR/start-jackd "$card1" > $DIR/log/jack.log 2>&1 &
+    $DIR/start-jackd "$card1"
   fi
 
   # Give jackd time to start
-  jack_wait -w -t 3 2>/dev/null
+  jack_wait -w -t 10 2>/dev/null
 
   if test "$(jack_wait -c)" = "running"; then
     # Start sooperlooper
     echo "Starting sooperlooper with $LOOPS loops"
-    sooperlooper -m "$BINDINGS" -l "$LOOPS" > $DIR/log/sooperlooper.log 2>/dev/null &
+    sooperlooper -m "$BINDINGS" -l "$LOOPS" &
 
     # Make jack connections after waiting on sooperlooper
-    sleep 2
+    sleep 5
 
     echo "Connecting jack ports"
     jack_connect system:capture_1 sooperlooper:common_in_1
@@ -83,9 +83,9 @@ else
     if test ! -z "$(aconnect -o | grep "$MIDI_DEV")"; then
       # Start loopidings
       echo "Starting loopidings"
-      RECORDINGS="/media/usb/djcorbyn/track_" ./loopidings.py > $DIR/log/loopidings.log 2>/dev/null &
+      RECORDINGS="/media/usb/djcorbyn/track_" ./loopidings.py &
 
-      sleep 2
+      sleep 5
 
       echo "Connecting $MIDI_DEV to sooperlooper"
       aconnect "${MIDI_DEV}:0" "sooperlooper:0"

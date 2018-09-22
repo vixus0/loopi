@@ -1,20 +1,14 @@
 #!/usr/bin/env bash
 
 # Disconnect all the things
-echo "Disconnecting JACK"
-jack_disconnect system:capture_1 sooperlooper:common_in_1
-jack_disconnect system:capture_2 sooperlooper:common_in_2
-jack_disconnect sooperlooper:common_out_1 system:playback_1
-jack_disconnect sooperlooper:common_out_2 system:playback_2
-
 echo "Disconnecting MIDI"
 aconnect -d "USB Midi:0" "sooperlooper:0"
+aconnect -d "USB Midi:0" "loopidings:0"
 
 # Kill all the things
 echo "Killing processes"
-killall jack_capture
-pkill -9 -f midi_listen
-killall sloo
-killall jackd
-killall sooperlooper
-sudo killall monohorn
+pkill -f loopidings.py
+pkill -9 sloo
+pkill -9 jackd
+pkill -9 sooperlooper
+pkill -9 monohorn

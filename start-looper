@@ -2,7 +2,7 @@
 set -euo pipefail
 
 RECD="$HOME/recordings/$(date +%Y-%m-%d)"
-mkdir -p "$RECD"
+#mkdir -p "$RECD"
 
 # Settings
 export DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -13,4 +13,4 @@ export RECORDINGS="$RECD/track_"
 export AUDIO_DEV="US2x2"
 export MIDI_DEV="US-2x2"
 
-run-parts --exit-on-error ./init.d
+run-parts --exit-on-error "$DIR/init.d"

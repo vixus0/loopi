@@ -2,35 +2,38 @@
 
 from mididings import *
 from mididings.extra.osc import *
-from liblo import Address
+from liblo import send, Address
 from datetime import datetime
 from os import environ
 
-rec = False
+monohorn_url = 'osc.unix://localhost/tmp/monohorn.socket'
 
+jack_capture_start = System('jack_capture --format ogg --osc 9898 -fp '+environ['RECORDINGS'])
 jack_capture_stop = SendOSC(Address(9898), '/jack_capture/stop')
 
-def jack_capture_cmd():
-    return 'jack_capture --format ogg --osc 9898 -fp '+environ['RECORDINGS']
+def mh_start(e):
+    for y in range(8):
+        send(monohorn_url, '/set', 0, y, 0x1a2000)
+    send(monohorn_url, '/render')
 
-def rec_toggle(event, rec):
-    if rec:
-      print 'jack_capture STOP'
-      rec = False
-      return jack_capture_stop
-    else:
-      print 'jack_capture RECORD'
-      rec = True
-      return System(jack_capture_cmd())
+def mh_stop(e):
+    send(monohorn_url, '/clear')
 
 print('Loopidings')
 
 config(
-    client_name = 'loopidings'
-    )
+    client_name = 'loopidings',
+    in_ports = [
+        ('in', environ['MIDI_DEV']+':0')
+    ]
+)
 
 run(
-Filter(NOTEON) >> [
-    KeyFilter(notes=[5]) % Process(rec_toggle, rec)
-    ]
+    scenes = {
+        1: SceneGroup("jack_capture", [
+              Scene("stop", Pass(), [jack_capture_stop, Call(mh_stop)]),
+              Scene("start", Pass(), [jack_capture_start, Call(mh_start)]),
+           ])
+    },
+    control = Filter(NOTEON) >> KeyFilter(notes=[5]) % SubSceneSwitch(offset=1, wrap=True)
 )

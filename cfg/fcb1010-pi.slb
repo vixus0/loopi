@@ -10,6 +10,6 @@
 0 n 9  note mute 3  0 1  norm 0 127
 
 # undo all
-0 n 10 note undo_all -1  0 1  norm 0 127
+0 n 5 note undo_all -1  0 1  norm 0 127
 
 

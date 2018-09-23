@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+RECD="$HOME/recordings/$(date +%Y-%m-%d)"
+mkdir -p "$RECD"
 
 # Settings
+export DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export PATH="$PATH:$DIR/bin"
 export LOOPS=4
 export BINDINGS="$DIR/cfg/fcb1010-pi.slb"
-export RECORDINGS="/media/usb/djcorbyn/track_" 
+export RECORDINGS="$RECD/track_"
 export AUDIO_DEV="US2x2"
 export MIDI_DEV="US-2x2"
 
